@@ -11,17 +11,17 @@ jobs:
 
     steps:
       - name: Check out repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4          # v5 does not exist — v4 is current
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@v2
+      - name: Install Chrome + ChromeDriver
+        uses: browser-actions/setup-chrome@v1
         with:
-          install-chromedriver: true
+          chrome-version: stable           # pin to stable instead of relying on default
 
       - name: Install dependencies
         run: |
@@ -33,3 +33,12 @@ jobs:
           WG_GESUCHT_USERNAME: ${{ secrets.WG_GESUCHT_USERNAME }}
           WG_GESUCHT_PASSWORD: ${{ secrets.WG_GESUCHT_PASSWORD }}
         run: python WG-Gesucht.py
+
+      # Upload screenshot if the script failed — lets you see what went wrong
+      - name: Upload error screenshot
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: error-screenshot
+          path: error_screenshot.png
+          if-no-files-found: ignore
