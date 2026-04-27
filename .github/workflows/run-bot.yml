@@ -1,58 +1,58 @@
-name: Run WG-Gesucht bot
+# name: Run WG-Gesucht bot
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 8  * * *"
-    - cron: "0 9  * * *"
-    - cron: "0 10 * * *"
-    - cron: "0 11 * * *"
-    - cron: "0 12 * * *"
-    - cron: "0 13 * * *"
-    - cron: "0 14 * * *"
-    - cron: "0 15 * * *"
-    - cron: "0 16 * * *"
-    - cron: "0 17 * * *"
-    - cron: "0 18 * * *"
-    - cron: "0 19 * * *"
-    - cron: "0 20 * * *"
-    - cron: "0 21 * * *"
-    - cron: "0 22 * * *"
-    - cron: "0 23 * * *"
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
+# on:
+#   workflow_dispatch:
+#   schedule:
+#     - cron: "0 8  * * *"
+#     - cron: "0 9  * * *"
+#     - cron: "0 10 * * *"
+#     - cron: "0 11 * * *"
+#     - cron: "0 12 * * *"
+#     - cron: "0 13 * * *"
+#     - cron: "0 14 * * *"
+#     - cron: "0 15 * * *"
+#     - cron: "0 16 * * *"
+#     - cron: "0 17 * * *"
+#     - cron: "0 18 * * *"
+#     - cron: "0 19 * * *"
+#     - cron: "0 20 * * *"
+#     - cron: "0 21 * * *"
+#     - cron: "0 22 * * *"
+#     - cron: "0 23 * * *"
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v4          # v5 does not exist — v4 is current
+#     steps:
+#       - name: Check out repo
+#         uses: actions/checkout@v4          # v5 does not exist — v4 is current
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.12"
 
-      - name: Install Chrome + ChromeDriver
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable           # pin to stable instead of relying on default
+#       - name: Install Chrome + ChromeDriver
+#         uses: browser-actions/setup-chrome@v1
+#         with:
+#           chrome-version: stable           # pin to stable instead of relying on default
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+#       - name: Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
 
-      - name: Run script
-        env:
-          WG_GESUCHT_USERNAME: ${{ secrets.WG_GESUCHT_USERNAME }}
-          WG_GESUCHT_PASSWORD: ${{ secrets.WG_GESUCHT_PASSWORD }}
-        run: python WG-Gesucht.py
+#       - name: Run script
+#         env:
+#           WG_GESUCHT_USERNAME: ${{ secrets.WG_GESUCHT_USERNAME }}
+#           WG_GESUCHT_PASSWORD: ${{ secrets.WG_GESUCHT_PASSWORD }}
+#         run: python WG-Gesucht.py
 
-      # Upload screenshot if the script failed — lets you see what went wrong
-      - name: Upload error screenshot
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: error-screenshot
-          path: error_screenshot.png
-          if-no-files-found: ignore
+#       # Upload screenshot if the script failed — lets you see what went wrong
+#       - name: Upload error screenshot
+#         if: failure()
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: error-screenshot
+#           path: error_screenshot.png
+#           if-no-files-found: ignore
